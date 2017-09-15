@@ -1,7 +1,9 @@
 package com.vega.springmvc.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.vega.springmvc.model.ElementUri;
-
 @Controller
 public class MainController {
 	@RequestMapping(value = "/fname={fName}&ackurl={ackUrl}&mkey={mKey}", method = RequestMethod.GET)
@@ -19,7 +19,7 @@ public class MainController {
 			@PathVariable(value = "fName") String fName,
 	        @PathVariable(value = "ackUrl") String ackUrl,
 	        @PathVariable(value = "mKey") String mKey){
-		List<ElementUri> lists = getList(fName);
+		List<Map<String, String>> lists = getList(fName);
 		//tham chieu toi mainView.jsp
 		ModelAndView model = new ModelAndView("mainView");
 		model.addObject("lists", lists);
@@ -27,19 +27,23 @@ public class MainController {
 		return model;
 	}
 	
-	public List getList(String fileName) {
+	public List<Map<String, String>> getList(String fileName){
 		String[] splitSemicolon = fileName.split(";");
-		for(int i = 0 ;i < splitSemicolon.length; i++) {
+		String[] tails = new String[splitSemicolon.length];
+		
+		for(int i = 0; i < splitSemicolon.length; i++){
+			tails[i] = splitSemicolon[i].substring(splitSemicolon[i].indexOf("_") + 1);
 			splitSemicolon[i] = splitSemicolon[i].substring(0, splitSemicolon[i].length() - 2);
 		}
 		
-		List<ElementUri> lists = new ArrayList<ElementUri>();
+		List<Map<String, String>> lists = new ArrayList<Map<String, String>>();
 		
 		for(int i = 0; i < splitSemicolon.length; i++) {
-			ElementUri uri = new ElementUri(splitSemicolon[i]);
-			lists.add(uri);
+			Map<String, String> map = new HashMap<String, String>();
+			map.put(splitSemicolon[i], tails[i]);
+			lists.add(map);
 		}
 		
-		return lists;	
+		return lists;
 	}
 }
