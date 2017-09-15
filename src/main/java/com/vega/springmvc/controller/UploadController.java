@@ -11,33 +11,22 @@ public class UploadController {
 	  public String documentView(Model model,
 	          @PathVariable(value = "fName") String fName,
 	          @PathVariable(value = "ackUrl") String ackUrl,
-	          @PathVariable(value = "mKey") String mKey) {
-		  //Todo: split 0 and 1
-	      model.addAttribute("fName", fName);
-	      model.addAttribute("ackUrl", ackUrl);
-	      model.addAttribute("mKey", mKey);
+	          @PathVariable(value = "mKey") String mKey){
+		
+		String[] splitSemicolon = fName.split(";");
+		String[] tail = new String[splitSemicolon.length];
+		for(int i = 0 ;i < splitSemicolon.length; i++) {
+			tail[i] = splitSemicolon[i].substring(splitSemicolon[i].indexOf("_") + 1);
+			splitSemicolon[i] = splitSemicolon[i].substring(0, splitSemicolon[i].length() - 2);
+		}
+		
+		model.addAttribute("tail", tail);
+		model.addAttribute("splitSemicolon", splitSemicolon);
+		
+	    model.addAttribute("fName", fName);
+	    model.addAttribute("ackUrl", ackUrl);
+	    model.addAttribute("mKey", mKey);
 	 
-	      return "documentView";
+	    return "documentView";
 	  }
-	
-	public String zeroFile(String fileName){
-		String[] temp = fileName.split("0");
-		for(int i = 0; i < temp.length; i++) {
-			if(temp[i].length() == 1) {
-				
-			}
-		}
-		for(int i = 0; i < temp.length; i++) {
-			String[] secondTemp = temp[i].split("1");
-		}
-		fileName = temp[0];
-		return fileName;
-	}
-	
-	//Todo
-	public String oneFile(String fileName) {
-		String[] temp = fileName.split("0");
-		fileName = temp[0];
-		return fileName;
-	}
 }
