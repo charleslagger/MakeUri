@@ -5,6 +5,18 @@ public class ElementUri {
 	private String ackUrl;
 	private String key;
 	
+	public ElementUri(){}
+	
+	public ElementUri(String file) {
+		fileName = file;
+	}
+	
+	public ElementUri(String file, String ack, String key) {
+		fileName = file;
+		ackUrl = ack;
+		this.key = key;
+	}
+	
 	public String getAckUrl() {
 		return ackUrl;
 	}

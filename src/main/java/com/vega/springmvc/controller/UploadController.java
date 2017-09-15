@@ -1,32 +1,67 @@
 package com.vega.springmvc.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.vega.springmvc.model.ElementUri;
 
 @Controller
-public class UploadController {	
-	@RequestMapping("/fname={fName}&ackurl={ackUrl}&mkey={mKey}")
-	  public String documentView(Model model,
-	          @PathVariable(value = "fName") String fName,
-	          @PathVariable(value = "ackUrl") String ackUrl,
-	          @PathVariable(value = "mKey") String mKey){
+public class UploadController {
+	@RequestMapping(value = "/fname={fName}&ackurl={ackUrl}&mkey={mKey}/mn", method = RequestMethod.GET)
+	public ModelAndView getData(Model _model,
+			@PathVariable(value = "fName") String fName,
+	        @PathVariable(value = "ackUrl") String ackUrl,
+	        @PathVariable(value = "mKey") String mKey){
+		List<Map<String, String>> lists = getList(fName);
+		//tham chieu toi mainView.jsp
+		ModelAndView model = new ModelAndView("mainView");
+		model.addObject("lists", lists);
+		_model.addAttribute("fName", fName);
+		return model;
+	}
+	
+//	public List getList(String fileName) {
+//		String[] splitSemicolon = fileName.split(";");
+//		for(int i = 0 ;i < splitSemicolon.length; i++) {
+//			splitSemicolon[i] = splitSemicolon[i].substring(0, splitSemicolon[i].length() - 2);
+//		}
+//		
+//		List<ElementUri> lists = new ArrayList<ElementUri>();
+//		
+//		for(int i = 0; i < splitSemicolon.length; i++) {
+//			ElementUri uri = new ElementUri(splitSemicolon[i]);
+//			lists.add(uri);
+//		}
+//		
+//		return lists;	
+//	}
+	
+	public List<Map<String, String>> getList(String fileName){
+		String[] splitSemicolon = fileName.split(";");
+		String[] tails = new String[splitSemicolon.length];
 		
-		String[] splitSemicolon = fName.split(";");
-		String[] tail = new String[splitSemicolon.length];
-		for(int i = 0 ;i < splitSemicolon.length; i++) {
-			tail[i] = splitSemicolon[i].substring(splitSemicolon[i].indexOf("_") + 1);
+		for(int i = 0; i < splitSemicolon.length; i++){
+			tails[i] = splitSemicolon[i].substring(splitSemicolon[i].indexOf("_") + 1);
 			splitSemicolon[i] = splitSemicolon[i].substring(0, splitSemicolon[i].length() - 2);
 		}
 		
-		model.addAttribute("tail", tail);
-		model.addAttribute("splitSemicolon", splitSemicolon);
+		List<Map<String, String>> lists = new ArrayList<Map<String, String>>();
 		
-	    model.addAttribute("fName", fName);
-	    model.addAttribute("ackUrl", ackUrl);
-	    model.addAttribute("mKey", mKey);
-	 
-	    return "documentView";
-	  }
+		for(int i = 0; i < splitSemicolon.length; i++) {
+			Map map = new HashMap();
+			map.put(splitSemicolon[i], tails[i]);
+			lists.add(map);
+		}
+		
+		return lists;
+	}
 }

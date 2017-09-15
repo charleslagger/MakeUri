@@ -13,14 +13,26 @@
 			
             String[] splitSemicolon = (String[]) request.getAttribute("splitSemicolon");
             pageContext.setAttribute("splitSemicolon", splitSemicolon);
-        </jsp:scriptlet>
-
+    </jsp:scriptlet>
+		
+		<table>
+			<tbody>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+			</tbody>
+		</table>
         <%-- JSTL foreach tag example to loop an array in jsp --%>
         <c:forEach var="splitSemicolon" items="${pageScope.splitSemicolon}"> 
-            fname: <c:out value="${splitSemicolon}"/>
+            <c:out value="${splitSemicolon}"/>
             
         	
-            <button type="button">Upload</button>
+            <button type="button">Browser</button>
             
    			<br>
         </c:forEach>
@@ -28,14 +40,13 @@
         <c:forEach var="tail" items="${pageScope.tail}"> 
             
             <c:if test = "${tail== '1'}">
-         		<c:out value="*"/>
+         		<c:out value="(*)"/>
       		</c:if>
         
    			<br>
         </c:forEach>
         
-        ackUrl: ${ackUrl}<br> 
-   		mKey: ${mKey}<br>
+     
    
    <button type="button">Upload</button>
  
