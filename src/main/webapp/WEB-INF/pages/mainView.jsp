@@ -20,7 +20,7 @@
             <tr>
                 <th class="label-color">File Name</th>
                 <th></th>
-                <th class="label-color">Optional</th>
+                <th class="label-color">Optimal</th>
             </tr>
             <c:forEach items="${lists}" var="map" >
             	<c:forEach items="${map}" var="entry">
